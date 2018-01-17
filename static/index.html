@@ -9,65 +9,85 @@
     textarea {
       font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
     }
+
     .el-select .el-input {
       width: 130px;
+    }
+
+    .container {
+      width: 1140px;
+      margin: 0 auto;
+    }
+
+    .el-dropdown-link {
+      cursor: pointer;
+      color: #409EFF;
+    }
+
+    .el-icon-arrow-down {
+      font-size: 12px;
     }
   </style>
 </head>
 
-<body>
+<body style="position: static;">
   <div id="app">
     <el-container>
-      <el-header>
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1">首页</el-menu-item>
-          </el-menu-item>
-        </el-menu>
+      <el-header class="container">
+        <div>
+          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="2">发现</el-menu-item>
+          </el-menu>
+        </div>
       </el-header>
 
-      <el-main>
+      <el-main class="container">
         <el-row>
           <el-col :span="24">
-            <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
+            <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" @keyup.enter.native="dosearch">
               <el-select v-model="select" slot="prepend" placeholder="请选择">
                 <el-option label="琉璃神社" value="1"></el-option>
-                <el-option label="寂月神社" value="2"></el-option>
               </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="dosearch"></el-button>
             </el-input>
           </el-col>
         </el-row>
 
         <el-row>
-          <el-table :data="tableData">
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" inline class="demo-table-expand">
-                </el-form>
-              </template>
-            </el-table-column>
+          <el-table :data="tableData" v-loading="loading">
             <el-table-column label="标题">
               <template slot-scope="props">
                 <a :href="props.row.url" target="_blank">{{props.row.title}}</a>
               </template>
             </el-table-column>
-            <el-table-column label="站点" prop="site" width="200px">
+            <el-table-column label="站点" prop="site" width="120px">
             </el-table-column>
-            <el-table-column label="下载" width="250px">
+            <el-table-column label="下载" width="150px">
               <template slot-scope="scope">
-                <el-dropdown split-button type="primary" @command="handleMagnet" @click="handleMagnet(scope.row.magnet)">
-                  磁力
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="item in scope.row.magnet" :key="item" :command="item">{{item}}</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-                <el-dropdown split-button type="primary" @command="handlePan" @click="handlePan(scope.row.baidu)">
-                  度盘
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="item in scope.row.baidu" :key="item" :command="item">{{item}}</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                <el-col :span="12">
+                  <el-dropdown @command="handleMagnet">
+                    <span class="el-dropdown-link">
+                      磁力
+                      <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item v-for="item in scope.row.magnets" :key="item" :command="item">{{item}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+                <el-col :span="12">
+                  <el-dropdown @command="handlePan">
+                    <span class="el-dropdown-link">
+                      度盘
+                      <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item v-for="item in scope.row.baidu" :key="item" :command="item">{{item}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
               </template>
             </el-table-column>
           </el-table>
@@ -78,7 +98,6 @@
   </div>
 
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -86,14 +105,15 @@
   var Main = {
     data() {
       return {
-        select: '',
+        select: '1',
         activeIndex: '1',
         defaultProps: {
           children: 'children',
           label: 'label'
         },
         keyword: '',
-        tableData: []
+        tableData: [],
+        loading: false
       };
     },
     methods: {
@@ -101,20 +121,47 @@
         console.log(key, keyPath);
       },
       handleMagnet(text) {
-        if (typeof (text) != 'string') {
-          text = text[0]
+        if (typeof (text) == 'object') {
+          text = (text.length > 0) ? text[0] : ''
         }
-        url = 'magnet:?xt=urn:btih:' + text
-        console.log(url)
-        window.open(url)
+        if (text) {
+          const prefix = 'http://pan.baidu.com'
+          if (text.startsWith(prefix)) {
+            text = prefix + text
+          }
+          console.log(text)
+          window.open(text)
+        }
       },
       handlePan(text) {
-        if (typeof (text) != 'string') {
-          text = text[0]
+        if (typeof (text) == 'object') {
+          text = (text.length > 0) ? text[0] : ''
         }
-        url = 'http://pan.baidu.com/s/' + text
-        console.log(url)
-        window.open(url)
+        if (text) {
+          const prefix = 'magnet:?xt=urn:btih:'
+          if (text.startsWith(prefix)) {
+            text = prefix + text
+          }
+          console.log(text)
+          window.open(text)
+        }
+      },
+      dosearch() {
+        const vm = this;
+        vm.loading = true;
+        axios.post('http://127.0.0.1:5000/rpc', {
+          jsonrpc: '2.0',
+          method: 'search',
+          id: '1',
+          params: { 'keyword': this.keyword }
+        }).then(function (response) {
+          let result = response.data.result
+          vm.tableData = result
+          vm.loading = false;
+        }).catch(function (error) {
+          console.log(error);
+          vm.loading = false;
+        })
       }
     }
   };

@@ -10,9 +10,8 @@ app.add_url_rule('/rpc', 'api', flask_api.as_view(), methods=['POST'])
 
 @flask_api.dispatcher.add_method
 def search(keyword):
-    print(keyword)
-    return db.search(Query().title.test(lambda v, t: t in v, keyword))
-
+    print("Search keyword: " + keyword)
+    return db.search(Query().title.test(lambda v, t: t in v.lower(), keyword.lower()))
 
 
 @app.route('/index')
