@@ -1,0 +1,4 @@
+tinydb
+requests
+json-rpc
+flask
