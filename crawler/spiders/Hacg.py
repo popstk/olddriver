@@ -26,8 +26,8 @@ def get_dupan_links(result_text):
 
 class HacgSpider(scrapy.Spider):
     name = 'Hacg'
-    allowed_domains = ['http://www.llss.tv']
-    start_urls = ['http://http://www.llss.tv/']
+    allowed_domains = ['www.llss.tv']
+    start_urls = ['http://www.llss.tv/']
 
     def parse(self, response):
         for href in response.css('a::attr(href)'):
