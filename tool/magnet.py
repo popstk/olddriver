@@ -87,25 +87,3 @@ def get_url_prefix(url):
         domain_match = re.search(r'(.*?)://(.*)$', url)
         return (domain_match.group(1), domain_match.group(2))
     
-
-def get_magnet_links(result_text):
-    if (ignore_html_label):
-        result_text = re.sub(r'<[\s\S]*?>', '', result_text)
-
-    result_text = re.sub(r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result_text)
-
-    hashes = list(set(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]', result_text)))
-    hashes.extend(list(set(re.findall(r'[^0-9a-zA-Z]([0-9a-zA-Z]{32})[^0-9a-zA-Z]', result_text))))
-    magnets = list(set([hash_value.lower() for hash_value in hashes if not hash_value.lower() in found_magnets]))
-    
-    found_magnets.extend(magnets)
-    return magnets
-
-
-def get_page_title(result_text):
-    match = re.search(r'<title>(.+?)</title>', result_text)
-    if match:
-        return match.group(1).strip()
-    else:
-        return ''
-
