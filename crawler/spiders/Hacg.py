@@ -12,8 +12,7 @@ def get_magnet_links(result_text):
         set(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]', result_text)))
     hashes.extend(
         list(set(re.findall(r'[^0-9a-zA-Z]([0-9a-zA-Z]{32})[^0-9a-zA-Z]', result_text))))
-    magnets = list(set([hash_value.lower()
-                        for hash_value in hashes if not hash_value.lower() in found_magnets]))
+    magnets = list(set([hash_value.lower() for hash_value in hashes]))
     return magnets
 
 
