@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Search</title>
+  <title>Old Driver</title>
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <style>
     textarea {
@@ -36,8 +36,9 @@
       <el-header class="container">
         <div>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="1">搜索</el-menu-item>
             <el-menu-item index="2">发现</el-menu-item>
+            <el-menu-item index="3">管理</el-menu-item>
           </el-menu>
         </div>
       </el-header>
@@ -153,7 +154,9 @@
           jsonrpc: '2.0',
           method: 'search',
           id: '1',
-          params: { 'keyword': this.keyword }
+          params: {
+            'keyword': this.keyword
+          }
         }).then(function (response) {
           let result = response.data.result
           vm.tableData = result

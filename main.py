@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
+from gevent import monkey
 from flask import Flask
 from jsonrpc.backend.flask import api as flask_api
 from search import db, Query
+from gevent import pywsgi
+
+monkey.patch_all()
 
 app = Flask(__name__)
 app.add_url_rule('/rpc', 'api', flask_api.as_view(), methods=['POST'])
@@ -20,4 +24,5 @@ def index():
     return app.send_static_file('index.html')
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    server = pywsgi.WSGIServer(('127.0.0.1', 9999), app)
+    server.serve_forever()
