@@ -23,16 +23,17 @@ def get_dupan_links(result_text):
 class HacgSpider(scrapy.Spider):
     name = 'Hacg'
     allowed_domains = ['www.llss.tv']
-    start_urls = ['http://www.llss.tv/']
+    start_urls = ['http://www.llss.tv/wp/']
 
     def parse(self, response):
         for href in response.css('a::attr(href)'):
             full_url = response.urljoin(href.extract())
             yield scrapy.Request(full_url, callback=self.parse_page)
 
+
     def parse_page(self, response):
         yield {
-            'title': response.css('title').extract()[0],
+            'title': response.css('title::text').extract_first(),
             'url': response.url,
             'magnets': get_magnet_links(response.body_as_unicode()),
             'baidu': get_dupan_links(response.body_as_unicode())
