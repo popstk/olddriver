@@ -5,7 +5,6 @@ import re
 
 def get_magnet_links(result_text):
     result_text = re.sub(r'<[\s\S]*?>', '', result_text)
-
     result_text = re.sub(
         r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result_text)
 
@@ -15,8 +14,6 @@ def get_magnet_links(result_text):
         list(set(re.findall(r'[^0-9a-zA-Z]([0-9a-zA-Z]{32})[^0-9a-zA-Z]', result_text))))
     magnets = list(set([hash_value.lower()
                         for hash_value in hashes if not hash_value.lower() in found_magnets]))
-
-    found_magnets.extend(magnets)
     return magnets
 
 
