@@ -1,5 +1,9 @@
+# web
 tinydb
 requests
 json-rpc
 flask
 gevent
+
+# spider
+scrapy
