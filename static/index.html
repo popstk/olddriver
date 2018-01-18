@@ -150,7 +150,7 @@
       dosearch() {
         const vm = this;
         vm.loading = true;
-        axios.post('http://127.0.0.1:5000/rpc', {
+        axios.post('/rpc', {
           jsonrpc: '2.0',
           method: 'search',
           id: '1',
