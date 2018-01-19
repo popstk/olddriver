@@ -14,10 +14,9 @@ def get_magnet_links(result_text):
     return list(set([hash_value.lower() for hash_value in hashes]))
 
 
-
 def get_dupan_links(result_text):
     pairs = re.findall(r'\W(\w{8})\W*(\w{4})\W', result_text)
-    return = list(set(p[0] + '#' + p[1] for p in pairs))
+    return list(set(p[0] + '#' + p[1] for p in pairs))
 
 
 class HacgSpider(scrapy.Spider):
