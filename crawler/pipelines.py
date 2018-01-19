@@ -12,6 +12,7 @@ class CrawlerPipeline(object):
         self.file = open('data/llss.json', 'w')
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item), ensure_ascii=False) + "\n"
-        self.file.write(line.encode('utf8'))
+        if item['magnets'] or item['baidu']:
+            line = json.dumps(dict(item), ensure_ascii=False) + "\n"
+            self.file.write(line.encode('utf8'))            
         return item
