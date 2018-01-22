@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+from scrapy.utils.response import open_in_browser
 
 
-def get_magnet_links(result_text):
-    result_text = re.sub(r'<[\s\S]*?>', '', result_text)
+def get_magnet_links(result):
+    result = re.sub(r'<[\s\S]*?>', '', result)
     # 可能是截断的，先拼起来
-    result_text = re.sub(r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result_text)
-
+    result = re.sub(r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result)
     # 40位和32位的磁力链接
-    hashes = list(set(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]', result_text)))
-    hashes.extend(list(set(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{32})[^0-9a-fA-F]', result_text))))
-    return list(set([hash_value.lower() for hash_value in hashes]))
+    hashes = re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]', result)
+    hashes.extend(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{32})[^0-9a-fA-F]', result))
+    return [hash_value.lower() for hash_value in hashes]
 
 
-def get_dupan_links(result_text):
-    pairs = re.findall(r'\W(\w{8})\s+(\w{4})\W', result_text)
-    return list(set(p[0] + '#' + p[1] for p in pairs))
+def get_dupan_links(result):
+    pairs = re.findall(ur'\W(1\w{7})(提取|密码|：|\s)+(\w{4})\W', result)
+    return[p[0] + '#' + p[2] for p in pairs]
 
 
 class HacgSpider(scrapy.Spider):
@@ -27,13 +27,23 @@ class HacgSpider(scrapy.Spider):
     def parse(self, response):
         for href in response.css('a::attr(href)'):
             full_url = response.urljoin(href.extract())
-            yield scrapy.Request(full_url, callback=self.parse_page)
+            if re.match(r'.*/\d+\.html', full_url):
+                yield scrapy.Request(full_url, callback=self.parse_page)
 
 
     def parse_page(self, response):
+        contents = response.css('div[class="entry-content"]').xpath('string(.)').extract()
+        contents.extend(response.css('div[class="comment-content"] p').xpath('string(.)').extract())
+
+        magnets = []
+        baidu = []
+        for content in contents:
+            magnets.extend(get_magnet_links(content))
+            baidu.extend(get_dupan_links(content))
+
         yield {
             'title': response.css('title::text').extract_first(),
             'url': response.url,
-            'magnets': get_magnet_links(response.body_as_unicode()),
-            'baidu': get_dupan_links(response.body_as_unicode())
+            'magnets': list(set(magnets)),
+            'baidu': list(set(baidu))
         }
