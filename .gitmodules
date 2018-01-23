@@ -1,0 +1,3 @@
+[submodule "crawler-web"]
+	path = crawler-web
+	url = https://gitee.com/popstk/crawler-web.git
