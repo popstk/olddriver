@@ -3,6 +3,8 @@ import scrapy
 import re
 from scrapy.utils.response import open_in_browser
 
+splits = [u'本站不提供下载']
+
 
 def get_magnet_links(result):
     result = re.sub(r'<[\s\S]*?>', '', result)
@@ -38,6 +40,8 @@ class HacgSpider(scrapy.Spider):
         magnets = []
         baidu = []
         for content in contents:
+            for split in splits:
+                content = content.replace(split, '')
             magnets.extend(get_magnet_links(content))
             baidu.extend(get_dupan_links(content))
 
