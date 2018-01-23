@@ -11,7 +11,7 @@ import pymongo
 class CrawlerPipeline(object):
     def __init__(self):
         self.client = pymongo.MongoClient()
-        self.db = self.lient['spider']
+        self.db = self.client['spider']
 
     def process_item(self, item, spider):
         if item['magnets'] or item['baidu']:
