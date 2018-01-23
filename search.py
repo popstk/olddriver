@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
-from tinydb import Query
-import tinydb
+import pymongo
 
-db = tinydb.TinyDB('data/hacg.json')
+client = pymongo.MongoClient()
+db = client['spider'].llss

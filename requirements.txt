@@ -1,9 +1,11 @@
 # web
-tinydb
 requests
 json-rpc
 flask
 gevent
+
+# storage
+pymongo
 
 # spider
 scrapy

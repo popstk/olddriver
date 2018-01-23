@@ -3,7 +3,7 @@
 from gevent import monkey
 from flask import Flask
 from jsonrpc.backend.flask import api as flask_api
-from search import db, Query
+from search import db
 from gevent import pywsgi
 
 monkey.patch_all()
@@ -15,7 +15,9 @@ app.add_url_rule('/rpc', 'api', flask_api.as_view(), methods=['POST'])
 @flask_api.dispatcher.add_method
 def search(keyword):
     print("Search keyword: " + keyword)
-    return db.search(Query().title.test(lambda v, t: t in v.lower(), keyword.lower()))
+    cursor = db.find(
+        {'title': {'$regex': '.*' + keyword + '.*', '$options': 'i'}})
+    return list(cursor)
 
 
 @app.route('/index')
