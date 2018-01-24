@@ -23,5 +23,5 @@ def search(keyword):
 
 
 if __name__ == '__main__':
-    server = pywsgi.WSGIServer(('0.0.0.0', 8923), app)
+    server = pywsgi.WSGIServer(('0.0.0.0', 8765), app)
     server.serve_forever()
