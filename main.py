@@ -22,11 +22,6 @@ def search(keyword):
     return json.loads(dumps(list(cursor)))
 
 
-@app.route('/index')
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
-
 if __name__ == '__main__':
     server = pywsgi.WSGIServer(('0.0.0.0', 8923), app)
     server.serve_forever()
