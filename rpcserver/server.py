@@ -6,6 +6,7 @@ from jsonrpc.backend.flask import api as flask_api
 from search import db
 from gevent import pywsgi
 import json
+import requests
 
 monkey.patch_all()
 
@@ -20,6 +21,20 @@ def search(keyword):
     cursor = db.find(
         {'title': {'$regex': '.*' + keyword + '.*', '$options': 'i'}})
     return json.loads(dumps(list(cursor)))
+
+
+@flask_api.dispatcher.add_method
+def manage(api):
+    res = requests.get('http://localhost:6800/%s.json' % api).json()
+    if res['status'] != 'ok':
+        return res
+    result = []
+    for status in ('pending', 'running', 'finished'):
+        jobs = res[status]
+        for job in jobs:
+            job['status'] = status
+            result.append(job)
+    return result
 
 
 if __name__ == '__main__':
