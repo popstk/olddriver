@@ -24,17 +24,11 @@ def search(keyword):
 
 
 @flask_api.dispatcher.add_method
-def manage(api):
-    res = requests.get('http://localhost:6800/%s.json' % api).json()
-    if res['status'] != 'ok':
+def manage(api, params=None):
+    res = requests.get('http://localhost:6800/%s.json' % api, params=params).json()
+    if res['status'] == 'ok':
         return res
-    result = []
-    for status in ('pending', 'running', 'finished'):
-        jobs = res[status]
-        for job in jobs:
-            job['status'] = status
-            result.append(job)
-    return result
+    return res['message']
 
 
 if __name__ == '__main__':
