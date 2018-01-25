@@ -1,4 +1,4 @@
-# web
+# web server
 requests
 json-rpc
 flask
@@ -9,3 +9,7 @@ pymongo
 
 # spider
 scrapy
+
+# spider manager
+scrapyd
+scrapyd-client
