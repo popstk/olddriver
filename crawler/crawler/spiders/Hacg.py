@@ -11,8 +11,8 @@ def get_magnet_links(result):
     # 可能是截断的，先拼起来
     result = re.sub(r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result)
     # 40位和32位的磁力链接
-    hashes = re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{40})[^0-9a-fA-F]', result)
-    hashes.extend(re.findall(r'[^0-9a-fA-F]([0-9a-fA-F]{32})[^0-9a-fA-F]', result))
+    hashes = re.findall(r'\b([0-9a-fA-F]{40})\b', result)
+    hashes.extend(re.findall(r'\b([0-9a-fA-F]{32})\b', result))
     return [hash_value.lower() for hash_value in hashes]
 
 
@@ -32,6 +32,12 @@ class HacgSpider(scrapy.Spider):
             if re.match(r'.*/\d+\.html', full_url):
                 yield scrapy.Request(full_url, callback=self.parse_page)
 
+        last_page = response.css('#wp_page_numbers ul li a')[-1]
+        if last_page.css('::text').extract_first() == '>':
+            url = response.urljoin(last_page.css('::attr(href)').extract_first())
+            self.logger.info('Next page is %s', url)
+            yield scrapy.Request(url, callback=self.parse)
+
 
     def parse_page(self, response):
         contents = response.css('div[class="entry-content"]').xpath('string(.)').extract()
@@ -42,6 +48,7 @@ class HacgSpider(scrapy.Spider):
         for content in contents:
             for split in splits:
                 content = content.replace(split, '')
+            # self.logger.info(content)
             magnets.extend(get_magnet_links(content))
             baidu.extend(get_dupan_links(content))
 
