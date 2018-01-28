@@ -15,5 +15,5 @@ class CrawlerPipeline(object):
 
     def process_item(self, item, spider):
         item['_id'] = urlparse.urlsplit(item['url']).path
-        self.db.llss.update({'_id': item['_id']}, {'$set': item}, {'upsert': True})
+        self.db.llss.update({'_id': item['_id']}, {'$set': item}, upsert=True)
         return item
