@@ -12,12 +12,12 @@ def get_magnet_links(result):
     result = re.sub(r'([^0-9a-zA-Z])([0-9a-zA-Z]{5,30})[^0-9a-zA-Z]{5,30}([0-9a-zA-Z]{5,30})([^0-9a-zA-Z])', r'\1\2\3\4', result)
     # 40位和32位的磁力链接
     hashes = re.findall(r'\b([0-9a-fA-F]{40})\b', result)
-    hashes.extend(re.findall(r'\b([0-9a-fA-F]{32})\b', result))
+    hashes.extend(re.findall(r'\b([0-9a-fA-Z]{32})\b', result))
     return [hash_value.lower() for hash_value in hashes]
 
 
 def get_dupan_links(result):
-    pairs = re.findall(ur'\W(1\w{7})(提取|密码|：|\s)+(\w{4})\W', result)
+    pairs = re.findall(ur'\W(1\w{7})(提取|密码|：|\s)+(\w{4}|8酱)\W', result)
     return[p[0] + '#' + p[2] for p in pairs]
 
 
