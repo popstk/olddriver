@@ -4,8 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import json
 import pymongo
+import urlparse
 
 
 class CrawlerPipeline(object):
@@ -14,6 +14,6 @@ class CrawlerPipeline(object):
         self.db = self.client['spider']
 
     def process_item(self, item, spider):
-        if item['magnets'] or item['baidu']:
-            self.db.llss.insert_one(item)
+        item['_id'] = urlparse.urlsplit(item['url']).path
+        self.db.llss.update({'_id': item['_id']}, {'$set': item}, {'upsert': True})
         return item
