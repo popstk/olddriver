@@ -37,7 +37,7 @@ def listjobs():
                     data[spider] = {'jobs': [],
                                     'running': False, 'spider': spider}
                 data[spider]['jobs'].append(job)
-                if status == 'running':
+                if status == 'running' or status == 'pending':
                     data[spider]['running'] = True
     return data.values()
 
@@ -46,7 +46,7 @@ def listjobs():
 def startspider(name):
     p, s = name.split('.')
     jobs = scrapyd.list_jobs(p)
-    for job in jobs['running']:
+    for job in (jobs['running'] + jobs['pending']):
         if job['spider'] == s:
             return 'Already Running'
     return scrapyd.schedule(p, s)
