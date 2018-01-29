@@ -6,6 +6,7 @@ from jsonrpc.backend.flask import api as flask_api
 from search import db
 from gevent import pywsgi
 from scrapyd_api import ScrapydAPI
+import json
 
 monkey.patch_all()
 
