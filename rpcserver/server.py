@@ -34,14 +34,21 @@ def listjobs():
                 spider = "%s.%s" % (p, job.pop('spider'))
                 job['status'] = status
                 if spider not in data:
-                    data[spider] = []
-                data[spider].append(job)
-    return [{'spider': k, 'jobs': v} for k, v in data.iteritems()]
+                    data[spider] = {'jobs': [],
+                                    'running': False, 'spider': spider}
+                data[spider]['jobs'].append(job)
+                if status == 'running':
+                    data[spider]['running'] = True
+    return data.values()
 
 
 @flask_api.dispatcher.add_method
 def startspider(name):
-    p = name.split('.')
+    p, s = name.split('.')
+    jobs = scrapyd.list_jobs(p)
+    for job in jobs['running']:
+        if job['spider'] == s:
+            return 'Already Running'
     return scrapyd.schedule(p[0], '.'.join(p[1:]))
 
 
