@@ -11,7 +11,7 @@ monkey.patch_all()
 
 app = Flask(__name__)
 app.add_url_rule('/rpc', 'api', flask_api.as_view(), methods=['POST'])
-scrapyd = ScrapydAPI('http://45.76.111.18:6800')
+scrapyd = ScrapydAPI('http://localhost:6800')
 
 
 @flask_api.dispatcher.add_method
