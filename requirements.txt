@@ -1,5 +1,4 @@
 # web server
-requests
 json-rpc
 flask
 gevent
@@ -13,3 +12,4 @@ scrapy
 # spider manager
 scrapyd
 scrapyd-client
+python-scrapyd-api
