@@ -49,7 +49,7 @@ def startspider(name):
     for job in jobs['running']:
         if job['spider'] == s:
             return 'Already Running'
-    return scrapyd.schedule(p[0], '.'.join(p[1:]))
+    return scrapyd.schedule(p, s)
 
 
 if __name__ == '__main__':
