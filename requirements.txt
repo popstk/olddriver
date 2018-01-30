@@ -11,3 +11,4 @@ scrapy
 scrapyd
 scrapyd-client
 python-scrapyd-api
+schedule
