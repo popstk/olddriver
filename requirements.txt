@@ -1,6 +1,6 @@
 # web server
-json-rpc
 flask
+flask-restful
 gevent
 
 # storage
@@ -8,8 +8,6 @@ pymongo
 
 # spider
 scrapy
-
-# spider manager
 scrapyd
 scrapyd-client
 python-scrapyd-api
