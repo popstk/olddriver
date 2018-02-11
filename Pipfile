@@ -1,0 +1,22 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+
+
+[packages]
+
+flask = "*"
+flask-restful = "*"
+gevent = "*"
+pymongo = "*"
+Scrapy = "*"
+scrapyd = "*"
+scrapyd-client = "*"
+python-scrapyd-api = "*"
+schedule = "*"
