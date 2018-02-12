@@ -36,7 +36,8 @@ class HacgSpider(scrapy.Spider):
         if last_page.css('::text').extract_first() == '>':
             url = response.urljoin(last_page.css('::attr(href)').extract_first())
             self.logger.info('Next page is %s', url)
-            yield scrapy.Request(url, callback=self.parse)
+            # dont filter this url
+            yield scrapy.Request(url, callback=self.parse, dont_filter=True)
 
 
     def parse_page(self, response):
