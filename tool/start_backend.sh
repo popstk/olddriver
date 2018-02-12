@@ -1,3 +1,3 @@
 #/bin/sh
-cd ../scrapyd
+cd ../backend
 pipenv run nohup python app.py &
