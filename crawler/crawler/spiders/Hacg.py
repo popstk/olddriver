@@ -23,7 +23,7 @@ def get_dupan_links(result):
 
 class HacgSpider(scrapy.Spider):
     name = 'Hacg'
-    allowed_domains = ['www.llss.tv']
+    allowed_domains = ['www.llss.tv', 'www.llss.pw']
     start_urls = ['http://www.llss.tv/wp/']
 
     def parse(self, response):
