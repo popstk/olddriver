@@ -41,6 +41,7 @@ class HacgSpider(scrapy.Spider):
 
 
     def parse_page(self, response):
+        self.logger.debug('Current is %s', response.url)
         contents = response.css('div[class="entry-content"]').xpath('string(.)').extract()
         contents.extend(response.css('div[class="comment-content"] p').xpath('string(.)').extract())
 
