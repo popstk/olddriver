@@ -29,6 +29,7 @@ class HacgSpider(scrapy.Spider):
     def parse(self, response):
         for href in response.css('a::attr(href)'):
             full_url = response.urljoin(href.extract())
+            self.logger.info('url is %s', full_url)
             if re.match(r'.*/\d+\.html', full_url):
                 yield scrapy.Request(full_url, callback=self.parse_page)
 
