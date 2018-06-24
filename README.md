@@ -17,7 +17,7 @@
 
 # 部署
 0. 安装python依赖
-> pip install -r requirements.txt
+> pipenv install
 1. 使用docker启动数据存储
 > docker-compose up -d
 2. 启动爬虫调度服务器
@@ -35,3 +35,6 @@
 * mongodb清空爬虫数据
 > use spider  
 > db.xx.drop  
+
+# 兼容
+* python 2.7
