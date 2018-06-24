@@ -62,12 +62,6 @@ ROBOTSTXT_OBEY = True
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-# ITEM_PIPELINES  Configure item pipelines
-# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    'crawler.pipelines.CrawlerPipeline': 300,
-}
-
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -95,11 +89,18 @@ SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # Ensure all spiders share same duplicates filter through redis.
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
-# Store scraped item in redis for post-processing.
-ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
-}
-
 # Specify the full Redis URL for connecting (optional).
 # If set, this takes precedence over the REDIS_HOST and REDIS_PORT settings.
 REDIS_URL = 'redis://127.0.0.1:6379'
+
+MONGO_URI = "mongodb://127.0.0.1:27017/"
+MONGO_DATABASE = "spider"
+
+# ITEM_PIPELINES  Configure item pipelines
+# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+    # Store scraped item in redis for post-processing.
+    #'scrapy_redis.pipelines.RedisPipeline': 300,
+    'crawler.pipelines.MongoPipeline': 300,
+}
+
