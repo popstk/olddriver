@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
-from scrapy.utils.response import open_in_browser
+import requests
+from urlparse import urlparse
 
 splits = [u'本站不提供下载']
 
@@ -23,26 +24,30 @@ def get_dupan_links(result):
 
 class HacgSpider(scrapy.Spider):
     name = 'Hacg'
-    allowed_domains = ['www.llss.tv', 'www.llss.pw']
-    start_urls = ['http://www.llss.tv/wp/']
+    start_urls = ['http://acg.gy/']
 
     def parse(self, response):
         for href in response.css('a::attr(href)'):
+            url = href.extract() + "/wp"
+            domain = urlparse(url).netloc
+            setattr(HacgSpider, 'allowed_domains', [domain])
+            self.logger.info("starting from %s", domain)
+            yield scrapy.Request(url, self.parse_index)
+
+    def parse_index(self, response):
+        for href in response.css('a::attr(href)'):
             full_url = response.urljoin(href.extract())
             if re.match(r'.*/\d+\.html', full_url):
-                self.logger.info('url is %s', full_url)
-                yield scrapy.Request(full_url, callback=self.parse_page)
+                yield scrapy.Request(full_url, self.parse_page)
 
         last_page = response.css('#wp_page_numbers ul li a')[-1]
         if last_page.css('::text').extract_first() == '>':
             url = response.urljoin(last_page.css('::attr(href)').extract_first())
             self.logger.info('Next page is %s', url)
             # dont filter this url
-            yield scrapy.Request(url, callback=self.parse, dont_filter=True)
-
+            yield scrapy.Request(url, self.parse_index)
 
     def parse_page(self, response):
-        self.logger.debug('Current is %s', response.url)
         contents = response.css('div[class="entry-content"]').xpath('string(.)').extract()
         contents.extend(response.css('div[class="comment-content"] p').xpath('string(.)').extract())
 
