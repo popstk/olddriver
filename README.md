@@ -20,8 +20,13 @@
 > pipenv install
 1. 使用docker启动数据存储
 > docker-compose up -d
-2. 启动爬虫调度服务器
-> cd scapyd && nohup scrapyd &
+2. 启动爬虫调度服务器和gui
+> cd scapyd
+>  
+> nohup scrapyd & 
+>
+> nohup scrapydweb &
+
 3. 部署爬虫到服务器
 > cd crawler &&  scrapyd-deploy
 4. 启动web服务器
