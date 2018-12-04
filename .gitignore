@@ -63,3 +63,8 @@ target/
 
 # my project
 data/
+*.pid
+nohup.*
+crawler/setup.py
+scrapyd/dbs/
+
