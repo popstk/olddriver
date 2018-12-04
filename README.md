@@ -1,36 +1,45 @@
-# 前端
-* vue
-* vue-router
-* axios
-* webpack
+## 前端
+- vue
+- vue-router
+- axios
+- webpack
 
-# 后端
-* 存储系统 - mongodb
-* 爬虫框架 - scrapy
-* web服务器 - flask
+## 后端
+- 存储系统 - mongodb
+- 爬虫框架 - scrapy
+- web服务器 - flask
 
-# 后端项目结构
-* backend - restful web服务器
-* crawler- scrapy爬虫
-* scrapyd - 爬虫调度服务器
-* tool - 工具集
+## 后端项目结构
+- backend - restful web服务器
+- crawler- scrapy爬虫
+- scrapyd - 爬虫调度服务器
+- tool - 工具集
 
-# 部署
-0. 安装python依赖
-> pipenv install
-1. 使用docker启动数据存储
-> docker-compose up -d
-2. 启动爬虫调度服务器和gui
-> cd scapyd
->  
-> nohup scrapyd & 
->
-> nohup scrapydweb &
+## 部署
+#### 依赖环境
+``` bash
+docker-compose up -d    # 数据存储
+pipenv install   # 安装依赖
+pipenv shell    # 进入环境
+```
 
-3. 部署爬虫到服务器
-> cd crawler &&  scrapyd-deploy
-4. 启动web服务器
-> cd backend && nohup python app.py &
+#### 启动查询服务
+```
+nohup backend/python app.py &
+```
+
+#### 启动爬虫服务
+```bash
+cd scapyd
+nohup scrapyd &   # 启动爬虫调度服务器 
+nohup scrapydweb & # 启动爬虫调度gui
+```
+
+#### 部署爬虫
+```bash
+cd crawler
+scrapyd-deploy
+```
 
 # 工具
 * mongockient.sh - 存储容器mongodb的客户端
