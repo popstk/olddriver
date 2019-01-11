@@ -41,14 +41,14 @@ cd crawler
 scrapyd-deploy
 ```
 
-# 工具
+## 工具
 * mongockient.sh - 存储容器mongodb的客户端
 * keeprunning.py - 每天定时自动触发爬虫采集
 
-# 备忘
+##备忘
 * mongodb清空爬虫数据
 > use spider  
 > db.xx.drop  
 
-# 兼容
+## 兼容
 * python 2.7
