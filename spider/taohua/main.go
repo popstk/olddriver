@@ -1,16 +1,17 @@
 package main
 
 import (
-	"gopkg.in/mgo.v2/bson"
-	"log"
-	"net/url"
-	"net/http"
 	"errors"
-	"time"
+	"log"
+	"net/http"
+	"net/url"
 	"strings"
+	"time"
 
-	"github.com/popstk/olddriver/core"
 	"github.com/gocolly/colly"
+	"github.com/mongodb/mongo-go-driver/bson"
+	"github.com/mongodb/mongo-go-driver/mongo/options"
+	"github.com/popstk/olddriver/core"
 )
 
 const startURL = "http://z.thzdz.com/"
@@ -33,9 +34,8 @@ func mainPage() (*url.URL, error) {
 		return nil, err
 	}
 
-	return rsp.Request.URL,nil
+	return rsp.Request.URL, nil
 }
-
 
 func main() {
 	u, err := mainPage()
@@ -48,8 +48,22 @@ func main() {
 		panic(err)
 	}
 
-	next := ""
+	lasttime, err := core.GetLastTime("taohua")
+	if err != nil {
+		log.Printf("%T ", err)
+		panic(err)
+	}
+
+	collection, err := core.Collection("taohua")
+	if err != nil {
+		panic(err)
+	}
+
+	opt := options.FindOneAndUpdate()
+	opt.SetUpsert(true)
+
 	log.Print("Main page is ", u.String())
+	next := ""
 
 	c := colly.NewCollector(
 		colly.AllowedDomains(u.Hostname()),
@@ -68,25 +82,20 @@ func main() {
 			return
 		}
 
-		t, err:= time.Parse(timeR.Layout, parts[0])
+		t, err := time.Parse(timeR.Layout, parts[0])
 		if err != nil {
 			log.Print("Invalid time: ", e.Text)
 			return
 		}
 
 		timeR.Add(t)
-		
-		err = core.Save(&core.Item{
-			ID: bson.ObjectId(href),
-			Href: href,
-			Title: e.Text,
-			Time: t,
-		})
 
-		if err != nil {
-			panic(err)
-		}
- 
+		collection.FindOneAndUpdate(nil, bson.M{"href": href}, bson.M{"$set": &core.Item{
+			Href:  href,
+			Title: e.Text,
+			Time:  t,
+		}}, opt)
+
 		log.Print(e.Text)
 	})
 
@@ -95,13 +104,8 @@ func main() {
 		next = e.Request.AbsoluteURL(link)
 	})
 
-	c.OnScraped(func (r *colly.Response){
-		t, err := time.Parse(timeR.Layout, "2019-01-11")
-		if err != nil {
-			panic(err)
-		}
-
-		if timeR.BeforeMin(t) {
+	c.OnScraped(func(r *colly.Response) {
+		if timeR.BeforeMin(lasttime) {
 			log.Print("DeadLine")
 			return
 		}
