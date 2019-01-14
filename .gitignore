@@ -68,3 +68,5 @@ nohup.*
 crawler/setup.py
 scrapyd/dbs/
 
+bin/
+*.exe
