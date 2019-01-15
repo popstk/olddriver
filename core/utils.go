@@ -12,19 +12,10 @@ type TimeRange struct {
 }
 
 // NewTimeRange -
-func NewTimeRange(layout, now string) (*TimeRange, error) {
-	t := time.Now()
-	if now != "" {
-		var err error
-		t, err = time.Parse(layout, now)
-		if err != nil {
-			return nil, err
-		}
-	}
-
+func NewTimeRange(layout string) (*TimeRange, error) {
 	return &TimeRange{
-		Min:    t,
-		Max:    t,
+		Min:    time.Unix(1<<63-1, 0),
+		Max:    time.Unix(0, 0),
 		Layout: layout,
 	}, nil
 }
@@ -50,7 +41,8 @@ func (f *TimeRange) Add(t time.Time) {
 	}
 }
 
-// BeforeMin -
-func (f *TimeRange) BeforeMin(t time.Time) bool {
-	return f.Min.Before(t)
+// Today return today
+func Today() time.Time {
+	t := time.Now()
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }

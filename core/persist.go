@@ -1,7 +1,6 @@
 package core
 
 import (
-	"context"
 	"time"
 
 	"github.com/mongodb/mongo-go-driver/mongo"
@@ -12,8 +11,6 @@ const (
 	mgoURL = "mongodb://127.0.0.1:27017/"
 )
 
-var client *mongo.Client
-
 // Item -
 type Item struct {
 	Title  string    `json:"title"`
@@ -23,21 +20,19 @@ type Item struct {
 	Time   time.Time `json:"time"`
 }
 
-func init() {
-	var err error
-	client, err = mongo.NewClient(mgoURL)
-	if err != nil {
-		panic(err)
-	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
-	if err != nil {
-		panic(err)
-	}
-}
-
 // Collection -
 func Collection(key string) (*mongo.Collection, error) {
+	client, err := mongo.NewClient(mgoURL)
+	if err != nil {
+		return nil, err
+	}
+
+	err = client.Connect(nil)
+	if err != nil {
+		return nil, err
+	}
+
 	c := client.Database(mgoDB).Collection(key)
 	return c, nil
 }
+

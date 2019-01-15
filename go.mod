@@ -12,6 +12,7 @@ require (
 	github.com/google/go-cmp v0.2.0 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/mongodb/mongo-go-driver v0.2.0
+	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/temoto/robotstxt v0.0.0-20180810133444-97ee4a9ee6ea // indirect
