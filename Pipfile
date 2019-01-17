@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+pep8 = "*"
 
 [packages]
 flask = "*"
@@ -11,8 +12,9 @@ flask-restful = "*"
 gevent = "*"
 pymongo = "*"
 scrapy = "*"
-scrapyd = "*"
-scrapyd-client = "*"
-python-scrapyd-api = "*"
 schedule = "*"
 scrapy-redis = "*"
+scrapyd-client = "*"
+python-scrapyd-api = "*"
+scrapyd = "*"
+pywin32 = "*"

@@ -5,6 +5,7 @@
         <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" @keyup.enter.native="dosearch">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option label="琉璃神社" value="1"></el-option>
+            <el-option label="桃花岛" value="2"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search" @click="dosearch"></el-button>
         </el-input>
@@ -67,7 +68,7 @@ export default {
       const vm = this
       vm.loading = true
       this.$axios
-        .get('/search/' + this.keyword)
+        .get('/search/' + this.select + '/' + this.keyword)
         .then(response => {
           vm.tableData = response.data
           vm.loading = false

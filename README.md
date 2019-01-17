@@ -52,3 +52,21 @@ scrapyd-deploy
 
 ## 兼容
 * python 2.7
+
+##  ProtoBuf 生成
+
+生成grpc-web相关的文件
+
+```bash
+# 生成protobuf message classes
+protoc backend\backend.proto --js_out=import_style=commonjs:.  
+# 生成gRPC-Web service client stub
+protoc backend\backend.proto --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. 
+```
+
+生成go相关文件
+
+```bash
+protoc backend\backend.proto --go_out=plugins=grpc:.
+```
+

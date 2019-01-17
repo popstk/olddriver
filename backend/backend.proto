@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.helloworld";
+//option java_outer_classname = "HelloWorldProto";
+
+package backend;
+
+service Spider {
+  rpc Search (SearchRequest) returns (SearchReply) {}
+}
+
+
+message SearchRequest {
+  string type = 1;
+  string keyword = 2;
+}
+
+message SearchReply {
+  string title = 1;
+  string href = 2;
+  string time = 3;
+  repeated string baidu = 4;
+  repeated string magnet = 5;
+}
