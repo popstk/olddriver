@@ -4,8 +4,8 @@
         <el-col :span="24">
         <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" @keyup.enter.native="dosearch">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
-            <el-option label="琉璃神社" value="1"></el-option>
-            <el-option label="桃花岛" value="2"></el-option>
+            <el-option label="琉璃神社" value="hacg"></el-option>
+            <el-option label="桃花岛" value="taohua"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search" @click="dosearch"></el-button>
         </el-input>
@@ -53,34 +53,51 @@
 </template>
 
 <script>
+import {SpiderClient} from 'backend_grpc_web_pb'
+import {SearchRequest, SearchReply} from 'backend_pb'
+
 export default {
   name: 'Search',
   data() {
     return {
       keyword: '',
-      select: '1',
+      select: 'hacg',
       tableData: [],
       loading: false
     }
+  },
+  created: function() {
+    this.client = new SpiderClient('/grpc')
   },
   methods: {
     dosearch() {
       const vm = this
       vm.loading = true
-      this.$axios
-        .get('/search/' + this.select + '/' + this.keyword)
-        .then(response => {
-          vm.tableData = response.data
-          vm.loading = false
-        })
-        .catch(function(error) {
-          vm.loading = false
-          console.log(error)
+      
+      var request = new SearchRequest()
+      request.setType = this.select
+      request.setKeyword = this.keyword
+
+      var call = this.client.search(request,{}, function(err, response) {
+        if (err) {
           vm.$notify.error({
             title: '错误',
-            message: error
+            message: err
           })
-        })
+          console.log("normal is ", err)
+          vm.loading = false
+          return
+        }
+
+        vm.tableData = response.data
+        vm.loading = false
+      })
+
+      call.on('status', function(status) {
+        console.log("status code is ", status.code)
+        console.log("status details is ", status.details)
+        console.log("status metadata is ", status.metadata)
+      })
     },
     handleMagnet(text) {
       if (typeof text === 'object') {

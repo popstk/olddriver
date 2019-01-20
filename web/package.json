@@ -17,6 +17,8 @@
   "dependencies": {
     "axios": "^0.17.1",
     "element-ui": "^2.4.11",
+    "google-protobuf": "^3.6.1",
+    "grpc-web": "^1.0.3",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.22",

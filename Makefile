@@ -15,3 +15,9 @@ hacg:
 taohua:
 	go build -o $(BIN)/taohua$(EXT) ./spider/taohua
 
+client:
+	go build -o $(BIN)/client$(EXT) ./rpc/client
+
+server:
+	go build -o $(BIN)/server$(EXT) ./rpc/server
+
