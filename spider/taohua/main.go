@@ -21,11 +21,19 @@ const (
 	spiderName     = "taohua"
 )
 
+func init() {
+	log.SetFlags(log.Lshortfile | log.Ltime)
+}
+
 func mainPage() (*url.URL, error) {
 	var u string
 	c := colly.NewCollector()
 	c.OnHTML("body > div.main > div:nth-child(3) #newurllink > a", func(e *colly.HTMLElement) {
 		u = e.Attr("href")
+		if u == "" {
+			log.Print("Save main page")
+			e.Response.Save("mainpage.txt")
+		}
 	})
 	c.Visit(startURL)
 
