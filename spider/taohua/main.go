@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	startURL       = "http://z.thzdz.com/"
+	startURL       = "http://taohuale.us/"
 	asiaUncensored = "forum-181-1.html"
 	spiderName     = "taohua"
 )
@@ -28,13 +28,18 @@ func init() {
 func mainPage() (*url.URL, error) {
 	var u string
 	c := colly.NewCollector()
-	c.OnHTML("body > div.main > div:nth-child(3) #newurllink > a", func(e *colly.HTMLElement) {
+	c.OnHTML("body > div > div.categorythr > div:nth-child(3) > ul > li:nth-child(1) > a", func(e *colly.HTMLElement) {
 		u = e.Attr("href")
 		if u == "" {
 			log.Print("Save main page")
 			e.Response.Save("mainpage.txt")
 		}
 	})
+
+	c.OnError(func(r *colly.Response, err error) {
+		log.Print("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+
 	c.Visit(startURL)
 
 	if u == "" {
