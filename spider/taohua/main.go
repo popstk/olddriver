@@ -16,9 +16,8 @@ import (
 )
 
 const (
-	startURL       = "http://taohuale.us/"
-	asiaUncensored = "forum-181-1.html"
-	spiderName     = "taohua"
+	startURL   = "http://taohuale.us/"
+	spiderName = "taohua"
 )
 
 func init() {
@@ -142,28 +141,32 @@ func crawl(conf *core.SpiderConfig) error {
 		log.Print("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
 
-	u.Path = asiaUncensored
+	u.Path = conf.Tag
 	c.Visit(u.String())
 	conf.Last = timeR.Max
 	return nil
 }
 
 func main() {
-	conf, err := core.GetSpiderConfig(spiderName)
-	if err != nil {
-		panic(err)
+	confs, err := core.GetSpiderConfig(spiderName)
+	if err == core.ErrNoDocuments {
+		log.Print("No Documents for ", spiderName)
+		return
 	}
 
-	if err = crawl(conf); err != nil {
-		log.Print(err)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	c := cron.New()
-	c.AddFunc(conf.Cron, func() {
-		if err = crawl(conf); err != nil {
-			log.Print(err)
-		}
-	})
+	for _, conf := range confs {
+		log.Print("Add Tag ", conf.Tag, ", cron is ", conf.Cron)
+		c.AddFunc(conf.Cron, func() {
+			if err = crawl(conf); err != nil {
+				log.Print(err)
+			}
+		})
+	}
 
 	c.Start()
 	core.WaitForExit()
