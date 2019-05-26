@@ -79,6 +79,7 @@ func crawl(conf *core.SpiderConfig) error {
 	opt := options.FindOneAndUpdate()
 	opt.SetUpsert(true)
 
+
 	log.Print("Main page is ", u.String())
 	next := ""
 
