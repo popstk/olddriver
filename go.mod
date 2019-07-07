@@ -8,10 +8,10 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gocolly/colly v1.1.0
-	github.com/golang/mock v1.2.0 // indirect
-	github.com/golang/protobuf v1.2.0
+	github.com/golang/protobuf v1.3.1
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
-	github.com/google/go-cmp v0.2.0 // indirect
+	github.com/google/go-cmp v0.3.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway v1.9.0
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/mongodb/mongo-go-driver v0.2.0
 	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
@@ -21,13 +21,12 @@ require (
 	github.com/tidwall/pretty v0.0.0-20180105212114-65a9db5fad51 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
-	golang.org/x/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
-	golang.org/x/net v0.0.0-20190110200230-915654e7eabc
-	golang.org/x/oauth2 v0.0.0-20190115181402-5dab4167f31c // indirect
-	golang.org/x/sys v0.0.0-20190115152922-a457fd036447 // indirect
-	golang.org/x/tools v0.0.0-20190116002428-2e4132e53b93 // indirect
-	google.golang.org/genproto v0.0.0-20190111180523-db91494dd46c // indirect
-	google.golang.org/grpc v1.18.0
-	honnef.co/go/tools v0.0.0-20190109154334-5bcec433c8ea // indirect
+	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
+	golang.org/x/net v0.0.0-20190603091049-60506f45cf65 // indirect
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
+	golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed // indirect
+	golang.org/x/text v0.3.2 // indirect
+	google.golang.org/appengine v1.6.0 // indirect
+	google.golang.org/genproto v0.0.0-20190605220351-eb0b1bdb6ae6 // indirect
+	google.golang.org/grpc v1.21.1
 )

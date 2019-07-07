@@ -2,12 +2,12 @@
 <el-main class="container">
     <el-row>
         <el-col :span="24">
-        <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" @keyup.enter.native="dosearch">
+        <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" @keyup.enter.native="doSearch">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option label="琉璃神社" value="hacg"></el-option>
             <el-option label="桃花岛" value="taohua"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search" @click="dosearch"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
         </el-input>
         </el-col>
     </el-row>
@@ -70,33 +70,33 @@ export default {
     this.client = new SpiderClient('/grpc')
   },
   methods: {
-    dosearch() {
+    doSearch() {
       const vm = this
       vm.loading = true
-      
-      var request = new SearchRequest()
-      request.setType = this.select
+
+      const request = new SearchRequest()
+      request.setType = this
       request.setKeyword = this.keyword
 
-      var call = this.client.search(request,{}, function(err, response) {
+      const call = this.client.search(request, {}, function (err, response) {
         if (err) {
           vm.$notify.error({
             title: '错误',
             message: err
           })
-          console.log("normal is ", err)
+          console.log('normal is ', err)
           vm.loading = false
           return
         }
 
         vm.tableData = response.data
         vm.loading = false
-      })
+      });
 
       call.on('status', function(status) {
-        console.log("status code is ", status.code)
-        console.log("status details is ", status.details)
-        console.log("status metadata is ", status.metadata)
+        console.log('status code is ', status.code)
+        console.log('status details is ', status.details)
+        console.log('status metadata is ', status.metadata)
       })
     },
     handleMagnet(text) {

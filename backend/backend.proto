@@ -1,10 +1,16 @@
 syntax = "proto3";
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
 
 package backend;
 
 service Spider {
-  rpc Search (SearchRequest) returns (SearchReply) {}
+  rpc Search (SearchRequest) returns (SearchReply) {
+    option (google.api.http) = {
+      post: "/v1/spider/items"
+      body: "*"
+    };
+  }
 }
 
 message Item {

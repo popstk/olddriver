@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	port = ":19527"
+	port = "127.0.0.1:19527"
 )
 
 func init() {

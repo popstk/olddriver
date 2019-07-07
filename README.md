@@ -9,24 +9,24 @@
 
 ## build
 ####  ProtoBuf 生成
-生成grpc-web相关的文件
-
-```bash
-# 生成protobuf message classes
-protoc backend\backend.proto --js_out=import_style=commonjs:.  
-# 生成gRPC-Web service client stub
-protoc backend\backend.proto --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. 
-```
+安装[protoc](https://github.com/protocolbuffers/protobuf/releases)
 
 生成go相关文件
-
 ```bash
+go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+go get -u github.com/golang/protobuf/protoc-gen-go
 protoc backend\backend.proto --go_out=plugins=grpc:.
 ```
 
 #### 爬虫
 ``` bash
 make taohua
+```
+
+#### 网关
+[grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
+```bash
+go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 ```
 
 #### rpc服务
