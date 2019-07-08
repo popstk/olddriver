@@ -13,7 +13,7 @@ require (
 	github.com/google/go-cmp v0.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.9.0
 	github.com/kennygrant/sanitize v1.2.4 // indirect
-	github.com/mongodb/mongo-go-driver v0.2.0
+	github.com/mongodb/mongo-go-driver v1.0.2
 	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
@@ -21,12 +21,13 @@ require (
 	github.com/tidwall/pretty v0.0.0-20180105212114-65a9db5fad51 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
+	go.mongodb.org/mongo-driver v1.0.2
 	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
 	golang.org/x/net v0.0.0-20190603091049-60506f45cf65 // indirect
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
 	golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed // indirect
 	golang.org/x/text v0.3.2 // indirect
 	google.golang.org/appengine v1.6.0 // indirect
-	google.golang.org/genproto v0.0.0-20190605220351-eb0b1bdb6ae6 // indirect
+	google.golang.org/genproto v0.0.0-20190605220351-eb0b1bdb6ae6
 	google.golang.org/grpc v1.21.1
 )

@@ -8,10 +8,8 @@ import (
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
-	_ "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -250,14 +248,6 @@ func (c *spiderClient) Search(ctx context.Context, in *SearchRequest, opts ...gr
 // SpiderServer is the server API for Spider service.
 type SpiderServer interface {
 	Search(context.Context, *SearchRequest) (*SearchReply, error)
-}
-
-// UnimplementedSpiderServer can be embedded to have forward compatible implementations.
-type UnimplementedSpiderServer struct {
-}
-
-func (*UnimplementedSpiderServer) Search(ctx context.Context, req *SearchRequest) (*SearchReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 
 func RegisterSpiderServer(s *grpc.Server, srv SpiderServer) {

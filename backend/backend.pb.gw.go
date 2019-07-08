@@ -107,7 +107,7 @@ func RegisterSpiderHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_Spider_Search_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "spider", "items"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Spider_Search_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "spider", "items"}, ""))
 )
 
 var (

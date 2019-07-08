@@ -23,15 +23,10 @@ protoc backend\backend.proto --go_out=plugins=grpc:.
 make taohua
 ```
 
-#### 网关
+#### 后端：网关 & grpc服务
 [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
 ```bash
-go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-```
 
-#### rpc服务
-``` bash
-make server
-make client
+go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 ```
 

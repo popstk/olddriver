@@ -1,7 +1,9 @@
 package core
 
 import (
-	"github.com/mongodb/mongo-go-driver/mongo"
+	"context"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -11,15 +13,8 @@ const (
 
 // Collection -
 func Collection(key string) (*mongo.Collection, error) {
-	client, err := mongo.NewClient(mgoURL)
-	if err != nil {
-		return nil, err
-	}
-
-	err = client.Connect(nil)
-	if err != nil {
-		return nil, err
-	}
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mgoURL))
+	Must(err)
 
 	c := client.Database(mgoDB).Collection(key)
 	return c, nil

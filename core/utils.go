@@ -46,3 +46,9 @@ func Today() time.Time {
 	t := time.Now()
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
+
+func Must(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
