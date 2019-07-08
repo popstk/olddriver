@@ -5,11 +5,11 @@
 
 ## 部署构建
 ``` bash
-npm install             # 安装依赖
-npm run-script build    # 生成文件
+cnpm install             # 安装依赖
+cnpm run-script build    # 生成文件
 ```
 
 ## 开发
 ``` bash
-npm run dev
+cnpm run dev
 ```
