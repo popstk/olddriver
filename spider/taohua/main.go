@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/gocolly/colly"
-	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/mongodb/mongo-go-driver/mongo/options"
 	"github.com/popstk/olddriver/core"
 	"github.com/robfig/cron"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -162,7 +162,7 @@ func main() {
 	c := cron.New()
 	for _, conf := range confs {
 		log.Print("Add Tag ", conf.Tag, ", cron is ", conf.Cron)
-		c.AddFunc(conf.Cron, func() {
+		_ = c.AddFunc(conf.Cron, func() {
 			if err = crawl(conf); err != nil {
 				log.Print(err)
 			}

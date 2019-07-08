@@ -11,9 +11,12 @@ else
 	PROTOFLAG=-I/usr/local/include
 endif
 
-all: spider backend
+all: web backend spider
 
-backend: gateway server spider
+backend: gateway server search
+
+web:
+	cd web; cnpm install;cnpm run-script build
 
 spider: hacg taohua
 
@@ -22,6 +25,9 @@ hacg:
 
 taohua:
 	go build $(FLAGS) -o $(BIN)/taohua$(EXT) ./spider/taohua
+
+search:
+	go build $(FLAGS) -o $(BIN)/search$(EXT) ./cmd/search
 
 server:
 	go build $(FLAGS) -o $(BIN)/server$(EXT) ./cmd/server
@@ -38,4 +44,4 @@ gateway:
 	go build $(FLAGS) -o $(BIN)/gateway$(EXT) ./cmd/gateway
 
 
-.PHONY: gateway
+.PHONY: gateway web
