@@ -1,15 +1,29 @@
-## web
-## 构建速度优化
-[使用DllPlugin优化第三方库](https://github.com/lin-xin/blog/issues/10)
-每次加入第三方库应该执行npm run build:dll 重新生成static/js/vendor.dll.js
+# web
 
-## 部署构建
-``` bash
-cnpm install             # 安装依赖
-cnpm run-script build    # 生成文件
+## Project setup
+```
+npm install
 ```
 
-## 开发
-``` bash
-cnpm run dev
+### Compiles and hot-reloads for development
 ```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

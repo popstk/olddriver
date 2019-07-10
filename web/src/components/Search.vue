@@ -73,15 +73,13 @@ export default {
         type: this.select,
         keyword: this.keyword
       }).then(res => {
-        console.log('res=>', res)
         vm.tableData = res.data
         vm.loading = false
       }).catch(err => {
         vm.$notify.error({
           title: '错误',
           message: err
-        })
-        console.log('normal is ', err)
+        });
         vm.loading = false
       })
     },
@@ -94,7 +92,6 @@ export default {
         if (!text.startsWith(prefix)) {
           text = prefix + text
         }
-        console.log(text)
         window.open(text)
       }
     },
@@ -107,7 +104,6 @@ export default {
         if (!text.startsWith(prefix)) {
           text = prefix + text
         }
-        console.log(text);
         window.open(text)
       }
     }

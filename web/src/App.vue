@@ -16,30 +16,33 @@
 </template>
 
 <script>
-export default {
-  name: 'App',
-  data() {
-    return {
-    }
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath)
-    }
+  import Router from "./router/index"
+  export default {
+    name: 'App',
+    data() {
+      return {
+      }
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        // eslint-disable-next-line no-console
+        console.log(key, keyPath)
+      }
+    },
+    router: Router
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  #app {
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', SimSun, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-.container {
-  width: 1140px;
-  margin: 0 auto;
-}
+  .container {
+    width: 1140px;
+    margin: 0 auto;
+  }
 </style>
