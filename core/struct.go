@@ -10,10 +10,12 @@ import (
 // Item -
 type Item struct {
 	Title  string    `json:"title"`
-	Href   string    `json:"url"`
-	Baidu  []string  `json:"baidu"`
-	Magnet []string  `json:"magnets"`
+	URL    string    `json:"url"`
+	Tag    string    `json:"tag"`
 	Time   time.Time `json:"time"`
+	Baidu  []string  `json:"baidu" bson:"baidu,omitempty"`
+	Magnet []string  `json:"magnet" bson:"magnet,omitempty"`
+	Link   []string  `json:"link" bson:"link,omitempty"`
 }
 
 // ToProtoItem -
@@ -24,11 +26,13 @@ func ToProtoItem(item *Item) (*pb.Item, error) {
 	}
 
 	return &pb.Item{
+		Url:    item.URL,
+		Tag:    item.Tag,
 		Title:  item.Title,
-		Href:   item.Href,
+		Time:   ts,
 		Baidu:  item.Baidu,
 		Magnet: item.Magnet,
-		Time:   ts,
+		Link:   item.Link,
 	}, nil
 }
 
@@ -40,10 +44,12 @@ func FromProtoItem(item *pb.Item) (*Item, error) {
 	}
 
 	return &Item{
+		URL:    item.Url,
+		Tag:    item.Tag,
 		Title:  item.Title,
-		Href:   item.Href,
+		Time:   ts,
 		Baidu:  item.Baidu,
 		Magnet: item.Magnet,
-		Time:   ts,
+		Link:   item.Link,
 	}, nil
 }

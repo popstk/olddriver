@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header class="container">
-        <div>
-          <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+    <el-container class="container">
+      <el-header>
+          <el-menu :default-active="$route.path"
+                   class="el-menu-demo"
+                   mode="horizontal"
+                   @select="handleSelect" router
+                   background-color="#545c64"
+                   text-color="#fff"
+                   active-text-color="#ffd04b">
             <el-menu-item index="/">搜索</el-menu-item>
             <el-menu-item index="/Manage">管理</el-menu-item>
             <el-menu-item index="/Discovery">发现</el-menu-item>
           </el-menu>
-        </div>
       </el-header>
-      <router-view></router-view>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </div>
 </template>
@@ -42,7 +48,7 @@
   }
 
   .container {
-    width: 1140px;
+    width: 85%;
     margin: 0 auto;
   }
 </style>

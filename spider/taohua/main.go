@@ -2,17 +2,15 @@ package main
 
 import (
 	"errors"
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/gocolly/colly"
 	"github.com/popstk/olddriver/core"
-	"github.com/robfig/cron"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -21,29 +19,30 @@ const (
 )
 
 func init() {
-	log.SetFlags(log.Lshortfile | log.Ltime)
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
 }
 
 func mainPage() (*url.URL, error) {
 	var u string
 	c := colly.NewCollector()
-	c.OnHTML("body > div > div.categorythr > div:nth-child(3) > ul > li:nth-child(1) > a", func(e *colly.HTMLElement) {
-		u = e.Attr("href")
-		if u == "" {
-			log.Print("Save main page")
-			e.Response.Save("mainpage.txt")
+	c.OnHTML("div.main div:nth-child(3) #newurllink a", func(e *colly.HTMLElement) {
+		if u = strings.TrimSpace(e.Attr("href")); u == "" {
+			log.Println("Save main page")
+			_ = e.Response.Save("mainPage.html")
 		}
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
-		log.Print("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+		log.Printf("Request URL %s failed with response: %s", r.Request.URL, err)
 	})
 
-	c.Visit(startURL)
+	_ = c.Visit(startURL)
 
 	if u == "" {
-		return nil, errors.New("Can not get main page")
+		return nil, errors.New("can not get main page")
 	}
+
+	log.Println("->", u)
 
 	rsp, err := http.Get(u)
 	if err != nil {
@@ -53,123 +52,120 @@ func mainPage() (*url.URL, error) {
 	return rsp.Request.URL, nil
 }
 
-func crawl(conf *core.SpiderConfig) error {
-	defer func() {
-		log.Print("Save spider config...")
-		if err := core.SaveSpiderConfig(spiderName, conf); err != nil {
-			log.Print(err)
-		}
-	}()
+func main() {
+	flag.Parse()
+
+	persist, err := core.NewPersist(spiderName)
+	core.Must(err)
+
+	conf, err := persist.Conf()
+	core.Must(err)
 
 	u, err := mainPage()
-	if err != nil {
-		return err
-	}
+	core.Must(err)
 
-	timeR, err := core.NewTimeRange("2006-01-02")
-	if err != nil {
-		return err
-	}
+	timeR, err := core.NewTimeRange("2006-1-2")
+	core.Must(err)
 
-	collection, err := core.Collection(spiderName)
-	if err != nil {
-		return err
-	}
+	u.Path = conf.Forum
+	log.Println("->", u.String())
+	c := colly.NewCollector(colly.AllowedDomains(u.Hostname()))
 
-	opt := options.FindOneAndUpdate()
-	opt.SetUpsert(true)
+	cc := c.Clone()
+	cc.OnXML(`//*[@id="postlist"]/div[1]//p[@class="attnm"]`, func(e *colly.XMLElement) {
+		torrent := e.ChildAttrs("./a", "href")
+		for i, v := range torrent {
+			u, err := url.Parse(core.JoinURL(e.Request.URL, v))
+			if err != nil {
+				continue
+			}
 
+			torrent[i] = fmt.Sprintf("%s://%s/forum.php?mod=attachment&aid=%s",
+				u.Scheme, u.Host, u.Query().Get("aid"))
+		}
+		e.Request.Ctx.Put("torrent", torrent)
+	})
 
-	log.Print("Main page is ", u.String())
-	next := ""
-
-	c := colly.NewCollector(
-		colly.AllowedDomains(u.Hostname()),
-	)
-
-	c.OnHTML("#threadlisttableid tbody tr th > a:nth-child(3)", func(e *colly.HTMLElement) {
-		href := e.Attr("href")
-		if href == "" {
-			log.Print("No href: ", e.Name)
+	// note: css selector 从第二页开始查找不到，改用xpath
+	c.OnXML(`//*[@id="threadlisttableid"]/tbody[@id="separatorline"]/following-sibling::tbody/tr`, func(e *colly.XMLElement) {
+		title := e.ChildText(".//th/a[2]")
+		if title == "" {
 			return
 		}
 
-		parts := strings.Split(e.Text, " ")
-		if len(parts) == 0 {
-			log.Print("Invalid text: ", e.Text)
-			return
+		href := e.ChildAttr(".//th/a[2]", "href")
+		href = core.JoinURL(e.Request.URL, href)
+
+		timeStr := e.ChildAttr(".//td[2]/em/span/span", "title")
+		if timeStr == "" {
+			timeStr = e.ChildText(".//td[2]/em/span")
 		}
 
-		t, err := time.Parse(timeR.Layout, parts[0])
+		t, err := timeR.AddTime(timeStr)
 		if err != nil {
-			log.Print("Invalid time: ", e.Text)
+			log.Println(err)
 			return
 		}
 
-		timeR.Add(t)
+		var torrent []string
+		if err := cc.Request("GET", href, nil, e.Request.Ctx, nil); err != nil {
+			log.Println(err)
+			return
+		}
 
-		collection.FindOneAndUpdate(nil, bson.M{
-			"href": href,
-		}, bson.M{
-			"$set": &core.Item{
-				Href:  href,
-				Title: e.Text,
-				Time:  t,
-			}}, opt)
+		torrent, _ = e.Request.Ctx.GetAny("torrent").([]string)
+		item := core.Item{
+			Tag:   spiderName,
+			URL:   href,
+			Time:  t,
+			Title: title,
+			Link:  torrent,
+		}
 
-		log.Print(e.Text)
+		log.Println("get item: ", item.URL)
+
+		if err := persist.Insert(href, &item); err != nil {
+			log.Println(err)
+		}
 	})
 
 	c.OnHTML("#fd_page_bottom > div > a.nxt", func(e *colly.HTMLElement) {
 		link := e.Attr("href")
-		next = e.Request.AbsoluteURL(link)
+		next := e.Request.AbsoluteURL(link)
+		e.Request.Ctx.Put("next", next)
 	})
 
 	c.OnScraped(func(r *colly.Response) {
-		// 严格小于
-		if timeR.Min.Before(conf.Last) {
-			log.Print("DeadLine")
+		log.Println("min time is ", timeR.Min)
+		log.Println("conf.Last time is ", conf.Last.Time())
+
+		if timeR.Min.Before(conf.Last.Time()) {
+			log.Println("DeadLine")
 			return
 		}
-		c.Visit(next)
+
+		if next, ok := r.Ctx.GetAny("next").(string); ok {
+			if err = c.Visit(next); err != nil {
+				log.Println(err)
+			}
+		}
 	})
 
 	c.OnRequest(func(r *colly.Request) {
-		log.Print("Visiting ", r.URL)
+		log.Println("Visiting ", r.URL)
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
 		log.Print("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
 
-	u.Path = conf.Tag
-	c.Visit(u.String())
-	conf.Last = timeR.Max
-	return nil
-}
-
-func main() {
-	confs, err := core.GetSpiderConfig(spiderName)
-	if err == core.ErrNoDocuments {
-		log.Print("No Documents for ", spiderName)
-		return
+	if err = c.Visit(u.String()); err != nil {
+		log.Println(err)
 	}
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	conf.Last.Set(timeR.Max)
 
-	c := cron.New()
-	for _, conf := range confs {
-		log.Print("Add Tag ", conf.Tag, ", cron is ", conf.Cron)
-		_ = c.AddFunc(conf.Cron, func() {
-			if err = crawl(conf); err != nil {
-				log.Print(err)
-			}
-		})
+	if err = persist.SaveConf(conf); err != nil {
+		log.Println(err)
 	}
-
-	c.Start()
-	core.WaitForExit()
-	c.Stop()
 }

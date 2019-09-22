@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net"
 
@@ -12,23 +16,42 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+var (
+	addr   string
+	mgoURL string
+)
+
 const (
-	port = "127.0.0.1:19527"
+	mgoDB = "spider"
 )
 
 func init() {
-	log.SetFlags(log.Lshortfile | log.Ltime)
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	flag.StringVar(&addr, "addr", ":7700", "search service address")
+	flag.StringVar(&mgoURL, "mongo", "mongodb://127.0.0.1:27017/", "mongodb url")
 }
 
-type server struct{}
+type Server struct {
+	mgo *mongo.Client
+}
 
-func (s *server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchReply, error) {
-	log.Printf(`type="%s"  keyword="%s"`, in.GetType(), in.GetKeyword())
-
-	collection, err := core.Collection(in.GetType())
+func NewServer() (*Server, error) {
+	mgo, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mgoURL))
 	if err != nil {
 		return nil, err
 	}
+
+	return &Server{mgo: mgo}, nil
+}
+
+func (s *Server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchReply, error) {
+	log.Printf(`type="%s"  keyword="%s" page=%d pageSize=%d`,
+		in.GetType(), in.GetKeyword(), in.Page, in.PageSize)
+
+	collection := s.mgo.Database(mgoDB).Collection(in.GetType())
+	op := options.Find()
+	op.SetSkip(int64(in.Page * in.PageSize))
+	op.SetLimit(int64(in.PageSize))
 
 	cursor, err := collection.Find(context.Background(),
 		bson.D{
@@ -36,12 +59,10 @@ func (s *server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchRe
 				{"$regex", ".*" + in.GetKeyword() + ".*"},
 				{"$options", "i"},
 			}},
-		}, nil)
+		}, op)
 	if err != nil {
 		return nil, err
 	}
-
-	log.Println("cursor ok -> ", cursor)
 
 	items := make([]*pb.Item, 0)
 	for cursor.Next(context.Background()) {
@@ -56,6 +77,7 @@ func (s *server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchRe
 			log.Println(err)
 			continue
 		}
+		item.Tag = in.GetType()
 		items = append(items, item)
 	}
 
@@ -65,16 +87,25 @@ func (s *server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchRe
 }
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	flag.Parse()
+
+	lis, err := net.Listen("tcp", addr)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		fmt.Println("failed to listen: ", err)
+		return
+	}
+
+	server, err := NewServer()
+	if err != nil {
+		fmt.Println("failed to new server: ", err)
+		return
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterSpiderServer(s, &server{})
+	pb.RegisterSpiderServer(s, server)
 	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		fmt.Println("failed to serve: ", err)
 	}
 }

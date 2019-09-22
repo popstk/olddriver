@@ -5,16 +5,17 @@ require (
 	github.com/antchfx/htmlquery v0.0.0-20181228060131-db5c1236cbb4 // indirect
 	github.com/antchfx/xmlquery v0.0.0-20181223105952-355641961c92 // indirect
 	github.com/antchfx/xpath v0.0.0-20181208024549-4bbdf6db12aa // indirect
+	github.com/go-redis/redis v6.15.5+incompatible
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gocolly/colly v1.1.0
 	github.com/golang/protobuf v1.3.1
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/google/go-cmp v0.3.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway v1.9.0
+	github.com/grpc-ecosystem/grpc-gateway v1.11.1
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/mongodb/mongo-go-driver v1.0.2
-	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
+	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/temoto/robotstxt v0.0.0-20180810133444-97ee4a9ee6ea // indirect
@@ -31,3 +32,5 @@ require (
 	google.golang.org/genproto v0.0.0-20190605220351-eb0b1bdb6ae6
 	google.golang.org/grpc v1.21.1
 )
+
+go 1.13
