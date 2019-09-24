@@ -2,108 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfc547b-eaf1-4db7-b66d-ade0c99a65fa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/core/db.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Mark.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Mark.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.pb.gw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend.proto" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/gateway/main.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/search/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/search/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/server/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/persist.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/struct.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/struct.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/db.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/taohua/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/spider/taohua/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/context.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/context.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/errors.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/marshal_jsonpb.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/marshal_jsonpb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/mux.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/mux.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/pattern.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/pattern.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/query.go" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/github.com/grpc-ecosystem/grpc-gateway/runtime/query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/bson/primitive/decimal.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/bson/primitive/objectid.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/bson/primitive/primitive.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/batch_cursor.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/bulk_write.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/change_stream.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/collection.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/cursor.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/database.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/doc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/errors.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/index_options_builder.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/index_view.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/mongo.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/aggregateoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/bulkwriteoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/changestreamoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/clientoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/clientoptions_1_10.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/clientoptions_1_9.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/collectionoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/countoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/dboptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/deleteoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/distinctoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/estimatedcountoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/findoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/gridfsoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/indexoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/insertoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/listcollectionsoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/listdatabasesoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/mongooptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/replaceoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/runcmdoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/sessionoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/transactionoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/options/updateoptions.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/results.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/session.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/single_result.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/github.com/mongodb/mongo-go-driver/mongo/util.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/net/html/atom/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mkasm_darwin.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mkpost.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksyscall.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksyscall_aix_ppc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksyscall_aix_ppc64.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksyscall_solaris.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksysctl_openbsd.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/mksysnum.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_aix.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_darwin.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_dragonfly.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_freebsd.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_netbsd.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_openbsd.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/sys/unix/types_solaris.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/charmap/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/htmlindex/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/internal/identifier/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/japanese/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/korean/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/simplifiedchinese/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/encoding/traditionalchinese/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/internal/language/compact/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/internal/language/compact/gen_index.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/internal/language/compact/gen_parents.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/internal/language/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/internal/language/gen_common.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/language/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/unicode/bidi/gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/unicode/bidi/gen_ranges.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/unicode/bidi/gen_trieval.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/unicode/norm/maketables.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/golang.org/x/text/unicode/norm/triegen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/modules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/modules.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/Manage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Manage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/components/Search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Search.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

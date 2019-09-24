@@ -11,7 +11,7 @@
                    active-text-color="#ffd04b">
             <el-menu-item index="/">搜索</el-menu-item>
             <el-menu-item index="/Manage">管理</el-menu-item>
-            <el-menu-item index="/Discovery">发现</el-menu-item>
+            <el-menu-item disabled index="/Discovery">发现</el-menu-item>
           </el-menu>
       </el-header>
       <el-main>

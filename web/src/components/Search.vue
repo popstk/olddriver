@@ -1,64 +1,78 @@
 <template>
     <div>
-        <el-input placeholder="请输入内容"
-                  v-model="keyword"
+        <el-input @keyup.enter.native="doSearch"
                   class="input-with-select"
-                  @keyup.enter.native="doSearch">
-            <el-select v-model="select" slot="prepend" placeholder="请选择">
+                  placeholder="请输入内容"
+                  v-model="keyword">
+            <el-select placeholder="请选择" slot="prepend" v-model="select">
                 <el-option label="琉璃神社" value="hacg"></el-option>
                 <el-option label="桃花岛" value="taohua"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
+            <el-button @click="doSearch" icon="el-icon-search" slot="append"></el-button>
         </el-input>
 
-        <el-table :data="tableData" v-loading="loading" height="500px">
+        <el-table :data="tableData" height="500px" v-loading="loading">
             <el-table-column type="index"
                              width="80px"></el-table-column>
             <el-table-column label="标题">
                 <template slot-scope="scope">
                     <el-link :href="scope.row.url"
-                             type="primary"
-                             target="_blank"
                              :underline="false"
-                             rel="noreferrer">
+                             rel="noreferrer"
+                             target="_blank"
+                             type="primary">
                         {{scope.row.title}}
                     </el-link>
                 </template>
             </el-table-column>
-            <el-table-column label="站点" prop="tag" width="120px">
+            <el-table-column label="发布时间"
+                             prop="time"
+                             :formatter="formatDayOnly"
+                             width="120px"
+                             sortable>
+            </el-table-column>
+            <el-table-column label="来源"
+                             prop="tag"
+                             width="120px">
             </el-table-column>
             <el-table-column label="下载" width="300px">
                 <template slot-scope="scope">
                     <el-col :span="12" v-if="scope.row.magnet">
                         <el-dropdown @command="handleMagnet">
-                <span class="el-dropdown-link">
-                    磁力<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                            <span class="el-dropdown-link">
+                                磁力<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in scope.row.magnet" :key="item" :command="item">{{item}}
-                                </el-dropdown-item>
+                                <el-dropdown-item :command="item"
+                                                  :key="item"
+                                                  v-for="item in scope.row.magnet">
+                                    {{item}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-col>
                     <el-col :span="12" v-if="scope.row.baidu">
                         <el-dropdown @command="handlePan">
-                <span class="el-dropdown-link">
-                    度盘<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                            <span class="el-dropdown-link">
+                                度盘<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in scope.row.baidu" :key="item" :command="item">{{item}}
-                                </el-dropdown-item>
+                                <el-dropdown-item
+                                        :command="item"
+                                        :key="item"
+                                        v-for="item in scope.row.baidu">
+                                    {{item}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-col>
                     <el-col :span="12" v-if="scope.row.link">
                         <el-dropdown @command="handleLink">
-                <span class="el-dropdown-link">
-                    链接<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                            <span class="el-dropdown-link">
+                                链接<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in scope.row.link" :key="item" :command="item">{{item}}
-                                </el-dropdown-item>
+                                <el-dropdown-item :command="item"
+                                                  :key="item" v-for="item in scope.row.link">
+                                    {{item}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-col>
@@ -67,13 +81,13 @@
         </el-table>
         <div style="margin-top: 10px">
             <el-pagination
-                    background
-                    @current-change="handleCurrentChange"
                     :current-page.sync="currentPage"
                     :hide-on-single-page="hidePagination"
                     :page-size="pageSize"
-                    layout="prev, pager, next, jumper"
-                    :total="total">
+                    :total="total"
+                    @current-change="handleCurrentChange"
+                    background
+                    layout="prev, pager, next, jumper">
             </el-pagination>
         </div>
     </div>
@@ -94,23 +108,36 @@
                 hidePagination: true,
             }
         },
+        mounted: function (){
+            Number.prototype.padLeft = function (base, chr) {
+                const len = (String(base || 10).length - String(this).length) + 1;
+                return len > 0 ? new Array(len).join(chr || '0') + this : this;
+            };
+        },
         methods: {
             doSearch() {
-                this.currentPage = 1
+                this.currentPage = 1;
                 this.handleCurrentChange()
             },
+            formatDayOnly(row){
+                let d = new Date(row.time);
+                const dd = d.getDate().padLeft();
+                const mm = (d.getMonth() + 1).padLeft();
+                const yyyy = d.getFullYear();
+                return yyyy + '-' + mm + '-' + dd
+            },
             handleCurrentChange() {
-                const vm = this
-                vm.loading = true
+                const vm = this;
+                vm.loading = true;
                 this.$axios.post('/v1/spider/items', {
                     type: this.select,
                     keyword: this.keyword,
                     page: this.currentPage,
                     pageSize: this.pageSize
                 }).then(res => {
-                    vm.loading = false
-                    vm.tableData = res.data.data
-                    vm.hidePagination = ((vm.tableData === undefined) || vm.tableData.length === 0)
+                    vm.loading = false;
+                    vm.tableData = res.data.data;
+                    vm.hidePagination = ((vm.tableData === undefined) || vm.tableData.length === 0);
 
                     if (res.data.total) {
                         vm.total = res.data.total
@@ -164,9 +191,5 @@
 
     .el-icon-arrow-down {
         font-size: 12px;
-    }
-
-    .el-select {
-        width: 130px;
     }
 </style>

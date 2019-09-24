@@ -19,8 +19,7 @@ var (
 )
 
 const (
-	DBName    = "spider"
-	configKey = "config:crawler"
+	DBName = "spider"
 )
 
 type CTime time.Time
@@ -51,9 +50,10 @@ func (c *CTime) UnmarshalJSON(data []byte) error {
 
 // Config -
 type Config struct {
-	Forum  string `json:"forum"`
-	Cron string `json:"cron"`
-	Last CTime  `json:"last"`
+	Last     CTime  `json:"last"`
+	Forum    string `json:"forum"`
+	Name     string `json:"name"`
+	Hostname string `json:"hostname"`
 }
 
 func (c Config) MarshalBinary() (data []byte, err error) {
@@ -83,8 +83,12 @@ func (p *Persist) Insert(href string, item *Item) error {
 		"$set": item}, opt).Err()
 }
 
-func (p *Persist) Conf() (*Config, error) {
-	data, err := p.redis.HGet(configKey, p.key).Result()
+func (p *Persist) Keys() ([]string, error) {
+	return p.redis.Keys(fmt.Sprintf("crawler:%s*", p.key)).Result()
+}
+
+func (p *Persist) Conf(key string) (*Config, error) {
+	data, err := p.redis.Get(key).Result()
 	if err == redis.Nil {
 		return &Config{}, nil
 	}
@@ -101,8 +105,8 @@ func (p *Persist) Conf() (*Config, error) {
 	return &conf, nil
 }
 
-func (p *Persist) SaveConf(conf *Config) error {
-	return p.redis.HSet(configKey, p.key, conf).Err()
+func (p *Persist) SaveConf(key string, conf *Config) error {
+	return p.redis.Set(key, conf, 0).Err()
 }
 
 func NewPersist(key string) (*Persist, error) {

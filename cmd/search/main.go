@@ -77,7 +77,6 @@ func (s *Server) Search(ctx context.Context, in *pb.SearchRequest) (*pb.SearchRe
 			log.Println(err)
 			continue
 		}
-		item.Tag = in.GetType()
 		items = append(items, item)
 	}
 

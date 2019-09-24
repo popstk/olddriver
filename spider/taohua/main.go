@@ -52,20 +52,21 @@ func mainPage() (*url.URL, error) {
 	return rsp.Request.URL, nil
 }
 
-func main() {
-	flag.Parse()
-
-	persist, err := core.NewPersist(spiderName)
-	core.Must(err)
-
-	conf, err := persist.Conf()
-	core.Must(err)
-
-	u, err := mainPage()
-	core.Must(err)
+func run(persist *core.Persist, key, index string) error {
+	conf, err := persist.Conf(key)
+	if err != nil {
+		return err
+	}
 
 	timeR, err := core.NewTimeRange("2006-1-2")
-	core.Must(err)
+	if err != nil {
+		return err
+	}
+
+	u, err := url.Parse(index)
+	if err != nil {
+		return err
+	}
 
 	u.Path = conf.Forum
 	log.Println("->", u.String())
@@ -94,8 +95,6 @@ func main() {
 		}
 
 		href := e.ChildAttr(".//th/a[2]", "href")
-		href = core.JoinURL(e.Request.URL, href)
-
 		timeStr := e.ChildAttr(".//td[2]/em/span/span", "title")
 		if timeStr == "" {
 			timeStr = e.ChildText(".//td[2]/em/span")
@@ -107,15 +106,15 @@ func main() {
 			return
 		}
 
-		var torrent []string
-		if err := cc.Request("GET", href, nil, e.Request.Ctx, nil); err != nil {
+		uri := core.JoinURL(e.Request.URL, href)
+		if err := cc.Request("GET", uri, nil, e.Request.Ctx, nil); err != nil {
 			log.Println(err)
 			return
 		}
 
-		torrent, _ = e.Request.Ctx.GetAny("torrent").([]string)
+		torrent, _ := e.Request.Ctx.GetAny("torrent").([]string)
 		item := core.Item{
-			Tag:   spiderName,
+			Tag:   key,
 			URL:   href,
 			Time:  t,
 			Title: title,
@@ -160,12 +159,29 @@ func main() {
 	})
 
 	if err = c.Visit(u.String()); err != nil {
-		log.Println(err)
+		return err
 	}
 
 	conf.Last.Set(timeR.Max)
+	return nil
+}
 
-	if err = persist.SaveConf(conf); err != nil {
-		log.Println(err)
+func main() {
+	flag.Parse()
+
+	persist, err := core.NewPersist(spiderName)
+	core.Must(err)
+
+	keys, err := persist.Keys()
+	core.Must(err)
+
+	u, err := mainPage()
+	core.Must(err)
+
+	for _, key := range keys {
+		log.Println("key -> ", key)
+		if err = run(persist, key, u.String()); err != nil {
+			log.Println(err)
+		}
 	}
 }
